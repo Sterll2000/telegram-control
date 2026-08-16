@@ -12,24 +12,22 @@ Flow:
 6. A signed HTTP-only session cookie is issued.
 7. All protected API operations use that server-side session and RBAC.
 
-## First administrator
+## Browser restriction
 
-Set `INITIAL_ADMIN_TELEGRAM_ID` to the numeric Telegram ID of the first administrator. On first login that account receives 5 stars and `SUPER_ADMIN`.
+The Mini App is intentionally Telegram-only. Opening the URL in a normal browser does not authenticate the user and shows the Telegram-only screen. `DEMO_MODE` is not used in production.
 
-After the first admin has logged in and access has been verified, remove `INITIAL_ADMIN_TELEGRAM_ID` from the production environment and redeploy.
+## Administrators
 
-## Giving 5 stars
+Automatic administrator promotion through `INITIAL_ADMIN_TELEGRAM_ID` is disabled. New Telegram users receive the normal `USER` role.
 
-For the local JSON database, after the target user has opened the Mini App once:
+To grant `SUPER_ADMIN` manually, set `ADMIN_TELEGRAM_IDS` in the production environment to a comma-separated list of Telegram numeric IDs, for example:
 
-```powershell
-npm run admin:stars -- 123456789 5
+```text
+ADMIN_TELEGRAM_IDS=123456789,987654321
 ```
 
-The command updates the user's stars and role and writes an audit record. It must be run on the server/environment that owns the database file.
+The IDs are read only on the server. They are never exposed to the browser.
 
-The web admin panel also exposes user management to roles holding `MANAGE_USERS`.
+## Production storage
 
-## Important production database note
-
-`lib/db.ts` is a local JSON adapter intended for the current starter/demo build. Before running multiple production instances, migrate the adapter to the normalized Supabase/PostgreSQL schema in `supabase/schema.sql`. Do not expose `SUPABASE_SERVICE_ROLE_KEY` to the browser.
+The current starter build uses a server-memory adapter in production so it does not attempt to write to Vercel's read-only filesystem. For durable multi-instance production data, migrate `lib/db.ts` to the normalized Supabase/PostgreSQL schema and keep `SUPABASE_SERVICE_ROLE_KEY` server-side only.
