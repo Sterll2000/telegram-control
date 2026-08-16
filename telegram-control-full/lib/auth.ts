@@ -61,7 +61,10 @@ export async function currentUser(): Promise<User | null> {
     if (found) return found;
   }
 
-  if (process.env.DEMO_MODE === 'true' && process.env.NODE_ENV !== 'production') return db().users[0] || null;
+  // Direct browser access: use the seeded owner account when there is no
+  // Telegram session. Telegram sessions still take priority above.
+  if (db().users[0]) return db().users[0];
+
   return null;
 }
 
