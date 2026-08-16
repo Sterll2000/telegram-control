@@ -1,0 +1,52 @@
+{
+  "name": "telegram-control-mini-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "smoke": "node scripts/smoke.mjs",
+    "security-smoke": "node scripts/security-smoke.mjs",
+    "crypto-smoke": "node scripts/crypto-smoke.mjs",
+    "rbac-smoke": "node scripts/rbac-smoke.mjs",
+    "admin:stars": "node scripts/set-stars.mjs",
+    "admin-sync-smoke": "node scripts/admin-sync-smoke.mjs",
+    "iris:monitor": "node scripts/iris-monitor.mjs",
+    "ui-regression-smoke": "node scripts/ui-regression-smoke.mjs",
+    "control-bot": "node scripts/control-bot.mjs",
+    "admin-automation-smoke": "node scripts/admin-automation-smoke.mjs",
+    "iris:scan": "node scripts/iris-scan.mjs",
+    "iris:bot": "node scripts/iris-bot-automation.mjs",
+    "admin-bot-automation-smoke": "node scripts/admin-bot-automation-smoke.mjs",
+    "feature-smoke": "node scripts/feature-smoke.mjs",
+    "final-regression-smoke": "node scripts/final-regression-smoke.mjs",
+    "iris:login": "node scripts/iris-login.mjs",
+    "release:smoke": "node scripts/release-smoke.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.55.0",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.468.0",
+    "next": "15.5.7",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "zod": "^3.25.76",
+    "telegram": "^2.26.21",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "type": "module"
+}

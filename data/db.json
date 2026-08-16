@@ -1,0 +1,602 @@
+{
+  "users": [
+    {
+      "id": "u-admin",
+      "telegramId": 10001,
+      "username": "demo_admin",
+      "firstName": "Денис",
+      "lastName": "Шиндин",
+      "stars": 4,
+      "role": "SENIOR_ADMIN"
+    },
+    {
+      "id": "u-senior",
+      "telegramId": 10002,
+      "username": "senior_admin",
+      "firstName": "Senior",
+      "lastName": "Admin",
+      "stars": 4,
+      "role": "SENIOR_ADMIN"
+    },
+    {
+      "id": "u-user",
+      "telegramId": 10003,
+      "username": "demo_user",
+      "firstName": "Demo",
+      "lastName": "User",
+      "stars": 3,
+      "role": "SENIOR_STAFF"
+    },
+    {
+      "id": "u-black-5",
+      "telegramId": 20001,
+      "username": "black_imperator",
+      "firstName": "Черный",
+      "lastName": "Император",
+      "stars": 5,
+      "role": "SUPER_ADMIN"
+    },
+    {
+      "id": "u-black-4",
+      "telegramId": 20002,
+      "username": "black_hand",
+      "firstName": "Черный",
+      "lastName": "Рука",
+      "stars": 4,
+      "role": "SENIOR_ADMIN"
+    },
+    {
+      "id": "u-blue-3",
+      "telegramId": 20003,
+      "username": "blue_inquisitor",
+      "firstName": "Синий",
+      "lastName": "Инквизитор",
+      "stars": 1,
+      "role": "USER",
+      "adminSince": "2026-08-15T16:40:01.050Z",
+      "status": "Активен",
+      "prefix": "Стажер",
+      "prefixColor": "#94a3b8",
+      "prefixStyle": "outline"
+    },
+    {
+      "id": "u-blue-2",
+      "telegramId": 20004,
+      "username": "blue_mage",
+      "firstName": "Синий",
+      "lastName": "Маг",
+      "stars": 1,
+      "role": "USER",
+      "adminSince": "2026-08-15T16:40:01.050Z",
+      "status": "Активен",
+      "prefix": "Стажер",
+      "prefixColor": "#94a3b8",
+      "prefixStyle": "outline"
+    },
+    {
+      "id": "u-black-1",
+      "telegramId": 20005,
+      "username": "black_guard",
+      "firstName": "Черный",
+      "lastName": "Гвардеец",
+      "stars": 1,
+      "role": "USER"
+    },
+    {
+      "id": "4fe0b139-476e-4f31-b286-451290f2de85",
+      "telegramId": 0,
+      "username": "🎾",
+      "firstName": "🎾 Денис Шиндин",
+      "lastName": "",
+      "stars": 3,
+      "role": "SENIOR_STAFF",
+      "adminSince": "2026-08-16T20:39:32.212Z",
+      "status": "Активен",
+      "prefix": "Ст.стажер",
+      "prefixColor": "#22d3ee",
+      "prefixStyle": "soft"
+    },
+    {
+      "id": "cc61edb1-1fe7-44ae-8a07-cf3fdeed520c",
+      "telegramId": 0,
+      "username": "🏐",
+      "firstName": "🏐 Евгения Сергеевна",
+      "lastName": "",
+      "stars": 1,
+      "role": "USER",
+      "adminSince": "2026-08-16T20:39:32.212Z",
+      "status": "Активен",
+      "prefix": "Стажер",
+      "prefixColor": "#94a3b8",
+      "prefixStyle": "outline"
+    }
+  ],
+  "adminAssignments": [
+    {
+      "id": "a76e72c9-5669-4940-87c4-9bc1aa361d24",
+      "userId": "4fe0b139-476e-4f31-b286-451290f2de85",
+      "group": "BLACK",
+      "rank": "IMPERIAL_MAGE",
+      "stars": 2,
+      "source": "IRIS",
+      "sourceChat": "1537940773",
+      "sourceSeenAt": "2026-08-16T21:07:35.621Z"
+    },
+    {
+      "id": "4fcf9f2e-a57f-49ca-ad25-b310d839f60c",
+      "userId": "cc61edb1-1fe7-44ae-8a07-cf3fdeed520c",
+      "group": "BLACK",
+      "rank": "IMPERIAL_GUARD",
+      "stars": 1,
+      "source": "IRIS",
+      "sourceChat": "1537940773",
+      "sourceSeenAt": "2026-08-16T21:07:35.621Z"
+    },
+    {
+      "id": "ccad3ee7-c584-4764-8a25-1163669bfd74",
+      "userId": "4fe0b139-476e-4f31-b286-451290f2de85",
+      "group": "BLUE",
+      "rank": "INQUISITOR",
+      "stars": 3,
+      "source": "IRIS",
+      "sourceChat": "1830433852",
+      "sourceSeenAt": "2026-08-16T21:08:14.347Z"
+    },
+    {
+      "id": "05e3e188-53dc-402c-b1d7-218cc4e776a6",
+      "userId": "cc61edb1-1fe7-44ae-8a07-cf3fdeed520c",
+      "group": "BLUE",
+      "rank": "IMPERIAL_GUARD",
+      "stars": 1,
+      "source": "IRIS",
+      "sourceChat": "1830433852",
+      "sourceSeenAt": "2026-08-16T21:08:14.347Z"
+    }
+  ],
+  "adminSnapshots": {
+    "BLACK": {
+      "1537940773": "[{\"username\":\"🎾\",\"displayName\":\"🎾 SORRY\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🎾\",\"displayName\":\"🎾 Katarjna\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🎾\",\"displayName\":\"🎾 Euphori\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Рустамчик\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Виктория\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🏐\",\"displayName\":\"🏐 A\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Poopka\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🎾\",\"displayName\":\"🎾 Nastyusha\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🎾\",\"displayName\":\"🎾 Карина\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🏐\",\"displayName\":\"🏐 marazm_111\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Афоня ru\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🏐\",\"displayName\":\"🏐 ALEKSEEVICH\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🏐\",\"displayName\":\"🏐 kitty\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Ноябрь\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🎾\",\"displayName\":\"🎾 Денис Шиндин\",\"stars\":2,\"rank\":\"IMPERIAL_MAGE\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Lost | Псих PUBG\",\"stars\":2,\"rank\":\"IMPERIAL_MAGE\"},{\"username\":\"🏐\",\"displayName\":\"🏐 V\",\"stars\":2,\"rank\":\"IMPERIAL_MAGE\"},{\"username\":\"🏐\",\"displayName\":\"🏐 A\",\"stars\":2,\"rank\":\"IMPERIAL_MAGE\"},{\"username\":\"🏐\",\"displayName\":\"🏐 LIJyTHuK TATAR\",\"stars\":2,\"rank\":\"IMPERIAL_MAGE\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Просто  Лунтuк\",\"stars\":2,\"rank\":\"IMPERIAL_MAGE\"},{\"username\":\"🏐\",\"displayName\":\"🏐 K\",\"stars\":2,\"rank\":\"IMPERIAL_MAGE\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Валентина\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 REDfox\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 desp_1\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Александр Белый-кот\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 lolitalolz\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Евгения Сергеевна\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 C'est la vie\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 ezwasted\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"}]",
+      "browser-demo": "[]"
+    },
+    "BLUE": {
+      "1830433852": "[{\"username\":\"🎾\",\"displayName\":\"🎾 Euphori\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🎾\",\"displayName\":\"🎾 Katarjna\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🎾\",\"displayName\":\"🎾 SORRY\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🏐\",\"displayName\":\"🏐 A\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Poopka\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Виктория\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Рустамчик\",\"stars\":4,\"rank\":\"IMPERATOR_HAND\"},{\"username\":\"🎾\",\"displayName\":\"🎾 Y.L\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🏐\",\"displayName\":\"🏐 крымская\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Ekaterina\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🏐\",\"displayName\":\"🏐 sweet_051_u\",\"stars\":3,\"rank\":\"INQUISITOR\"},{\"username\":\"🏐\",\"displayName\":\"🏐 JORA\",\"stars\":2,\"rank\":\"IMPERIAL_MAGE\"},{\"username\":\"🏐\",\"displayName\":\"🏐 S\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Лера\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 V\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 s.w.sesh\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 pbmmm\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Алиша\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Константин МОРТИ\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Suetolog\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Алексей\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 r e v e l a t e\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 KaRina\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 mommy\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Zzz\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Сонный\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Chuvash_21_rus\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Valeria\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"},{\"username\":\"🏐\",\"displayName\":\"🏐 Zloy\",\"stars\":1,\"rank\":\"IMPERIAL_GUARD\"}]"
+    }
+  },
+  "adminAutomation": {
+    "enabled": false,
+    "chats": {
+      "BLACK": "",
+      "BLUE": ""
+    },
+    "lastSyncAt": "2026-08-16T21:08:14.348Z",
+    "lastMessage": "BLUE:1830433852",
+    "lastResult": {
+      "processed": 2,
+      "added": 0,
+      "updated": 0,
+      "removed": 0,
+      "linked": 0
+    }
+  },
+  "nav": [
+    {
+      "id": "cat-main",
+      "title": "Основное",
+      "icon": "◈",
+      "items": [
+        {
+          "id": "nav-rules",
+          "title": "Правила",
+          "body": "Основные правила команды, стандарты поведения и порядок взаимодействия."
+        },
+        {
+          "id": "nav-contacts",
+          "title": "Контакты",
+          "body": "Контакты руководства и полезные ссылки."
+        }
+      ]
+    },
+    {
+      "id": "cat-learn",
+      "title": "Обучение",
+      "icon": "⌘",
+      "items": [
+        {
+          "id": "nav-training",
+          "title": "Базовое обучение",
+          "body": "Материалы для новых сотрудников."
+        },
+        {
+          "id": "nav-checks",
+          "title": "Проверки",
+          "body": "Порядок проведения проверок и оформления результатов."
+        },
+        {
+          "id": "a367cbed-7398-43d3-b5e8-e94cb232ac74",
+          "title": "Обучение",
+          "body": "ОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучениеОбучение"
+        }
+      ]
+    },
+    {
+      "id": "cat-tools",
+      "title": "Инструменты",
+      "icon": "◎",
+      "items": [
+        {
+          "id": "nav-tools",
+          "title": "Рабочие инструменты",
+          "body": "Список инструментов и инструкции по их использованию."
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "6ea59851-9948-4fc6-9161-6e60c8b40e47",
+      "title": "Проверка ",
+      "description": "Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка Проверка ",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "createdBy": "u-admin",
+      "createdAt": "2026-08-16T10:37:52.821Z"
+    },
+    {
+      "id": "task-1",
+      "title": "Проверить раздел «Правила»",
+      "description": "Проверить актуальность текста и сообщить об изменениях.",
+      "status": "DONE",
+      "priority": "HIGH",
+      "assigneeId": "u-user",
+      "createdBy": "u-admin",
+      "createdAt": "2026-08-15T16:40:01.050Z"
+    },
+    {
+      "id": "task-2",
+      "title": "Обновить обучающий материал",
+      "description": "Добавить примеры в базовый материал.",
+      "status": "DONE",
+      "priority": "MEDIUM",
+      "assigneeId": "u-user",
+      "createdBy": "u-senior",
+      "createdAt": "2026-08-15T16:40:01.050Z"
+    }
+  ],
+  "afk": [
+    {
+      "id": "36ec3b06-cfc4-49fa-a532-cf671be1df9a",
+      "userId": "u-admin",
+      "reason": "Надо",
+      "startsAt": "2026-08-15T22:09:16.704Z",
+      "endsAt": "2026-08-26T22:09:00.000Z",
+      "active": false,
+      "createdBy": "u-admin"
+    }
+  ],
+  "audit": [
+    {
+      "id": "bbe52369-82cd-4da1-9bc3-16f222ee5ebd",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "PROFILE",
+      "entityId": "u-admin",
+      "payload": {
+        "firstName": "Денис",
+        "lastName": "Шиндин"
+      },
+      "createdAt": "2026-08-16T11:30:44.577Z"
+    },
+    {
+      "id": "67b4dfae-aa42-40f9-a45d-1d330aefe729",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "TASK",
+      "entityId": "6ea59851-9948-4fc6-9161-6e60c8b40e47",
+      "payload": {
+        "status": "IN_PROGRESS"
+      },
+      "createdAt": "2026-08-16T10:50:35.996Z"
+    },
+    {
+      "id": "9f7b18de-6db2-4ec9-b26e-4c49896f5e03",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "TASK",
+      "entityId": "6ea59851-9948-4fc6-9161-6e60c8b40e47",
+      "payload": {
+        "status": "DONE"
+      },
+      "createdAt": "2026-08-16T10:50:33.457Z"
+    },
+    {
+      "id": "5a6b6d22-b2db-4285-9be3-7a89ec1cbfeb",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "PROFILE",
+      "entityId": "u-admin",
+      "payload": {
+        "firstName": "Денис",
+        "lastName": "Шиндин"
+      },
+      "createdAt": "2026-08-16T10:40:01.851Z"
+    },
+    {
+      "id": "d897f3b0-e230-4dde-b71d-fddc9c53bdd2",
+      "actorId": "u-admin",
+      "action": "CREATE",
+      "entity": "TASK",
+      "entityId": "6ea59851-9948-4fc6-9161-6e60c8b40e47",
+      "payload": {
+        "title": "Проверка "
+      },
+      "createdAt": "2026-08-16T10:37:52.824Z"
+    },
+    {
+      "id": "4f36a199-11d3-4dae-a63e-831448857d0f",
+      "actorId": "u-admin",
+      "action": "CREATE",
+      "entity": "NAVIGATION_ITEM",
+      "entityId": "a367cbed-7398-43d3-b5e8-e94cb232ac74",
+      "payload": {
+        "title": "Обучение"
+      },
+      "createdAt": "2026-08-16T10:33:47.313Z"
+    },
+    {
+      "id": "6a92f2a0-7bb2-449d-b572-aaa3c0723f8c",
+      "actorId": "u-admin",
+      "action": "CREATE",
+      "entity": "CHECK",
+      "entityId": "2dcfcca2-8682-4f69-a280-175f98084593",
+      "payload": {
+        "adminId": "u-blue-2",
+        "score": 18,
+        "maxScore": 18,
+        "messages": "8/8",
+        "replies": "8/8"
+      },
+      "createdAt": "2026-08-16T10:27:01.899Z"
+    },
+    {
+      "id": "6f17b649-9a03-42f1-af45-daefff67a004",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "TASK",
+      "entityId": "task-2",
+      "payload": {
+        "status": "DONE"
+      },
+      "createdAt": "2026-08-16T10:25:40.210Z"
+    },
+    {
+      "id": "c879c9f9-9a5b-46a6-bb62-e24be0f44d5b",
+      "actorId": "u-admin",
+      "action": "DELETE",
+      "entity": "TASK",
+      "entityId": "task-3",
+      "createdAt": "2026-08-15T22:10:34.054Z"
+    },
+    {
+      "id": "02106e91-4302-49e0-a01f-f3885a1270ef",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "USER",
+      "entityId": "u-admin",
+      "payload": {
+        "stars": 4,
+        "role": "SENIOR_ADMIN"
+      },
+      "createdAt": "2026-08-15T22:10:20.042Z"
+    },
+    {
+      "id": "ae68093d-ca47-47c0-9cc9-7a950d2badec",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "ADMIN_AUTOMATION",
+      "payload": {
+        "enabled": false,
+        "chats": {
+          "BLACK": [
+            "",
+            ""
+          ],
+          "BLUE": [
+            "",
+            ""
+          ]
+        }
+      },
+      "createdAt": "2026-08-15T22:09:29.792Z"
+    },
+    {
+      "id": "c39c5abf-9f80-4a96-bbed-12bdb11bd56d",
+      "actorId": "u-admin",
+      "action": "CREATE",
+      "entity": "AFK",
+      "entityId": "u-admin",
+      "payload": {
+        "reason": "Надо"
+      },
+      "createdAt": "2026-08-15T22:09:16.707Z"
+    },
+    {
+      "id": "1d97e1e5-7cc6-46e9-8599-30402e095618",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "TASK",
+      "entityId": "task-1",
+      "payload": {
+        "status": "DONE"
+      },
+      "createdAt": "2026-08-15T22:09:01.449Z"
+    },
+    {
+      "id": "e4c873f2-5461-4ac8-9cd1-7b157229f5dd",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "TASK",
+      "entityId": "task-1",
+      "payload": {
+        "status": "IN_PROGRESS"
+      },
+      "createdAt": "2026-08-15T22:08:57.634Z"
+    },
+    {
+      "id": "b2542812-0b99-4d05-a3aa-c1d2993417cb",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "ADMIN_AUTOMATION",
+      "payload": {
+        "enabled": true,
+        "chats": {
+          "BLACK": [
+            "",
+            ""
+          ],
+          "BLUE": [
+            "",
+            ""
+          ]
+        }
+      },
+      "createdAt": "2026-08-15T18:54:17.322Z"
+    },
+    {
+      "id": "deeb375e-2050-4799-8cee-daa8ea48e78c",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "TASK",
+      "entityId": "task-3",
+      "payload": {
+        "status": "NEW"
+      },
+      "createdAt": "2026-08-15T18:50:06.396Z"
+    },
+    {
+      "id": "9bd2fb2f-441e-4bc0-b784-dc9a159a4688",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "TASK",
+      "entityId": "task-1",
+      "payload": {
+        "status": "DONE"
+      },
+      "createdAt": "2026-08-15T18:50:03.340Z"
+    },
+    {
+      "id": "8fd98925-8943-4af3-a7d4-c7ca92c5f607",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "TASK",
+      "entityId": "task-1",
+      "payload": {
+        "status": "DONE"
+      },
+      "createdAt": "2026-08-15T18:50:03.333Z"
+    },
+    {
+      "id": "d82358e5-37a7-4cfc-a641-a368750e004a",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "TASK",
+      "entityId": "task-1",
+      "payload": {
+        "status": "DONE"
+      },
+      "createdAt": "2026-08-15T18:50:03.324Z"
+    },
+    {
+      "id": "7aea99cf-0efd-4cb0-b03c-830ca44f1a19",
+      "actorId": "u-admin",
+      "action": "UPDATE",
+      "entity": "TASK",
+      "entityId": "task-1",
+      "payload": {
+        "status": "DONE"
+      },
+      "createdAt": "2026-08-15T18:50:03.309Z"
+    },
+    {
+      "id": "99e1f430-51aa-432b-be19-d8e0bb5d5904",
+      "actorId": "u-admin",
+      "action": "SEED",
+      "entity": "SYSTEM",
+      "createdAt": "2026-08-15T16:40:01.050Z"
+    }
+  ],
+  "rolePermissions": {
+    "USER": [
+      "VIEW_CONTENT",
+      "VIEW_STATISTICS"
+    ],
+    "JUNIOR_STAFF": [
+      "VIEW_CONTENT",
+      "EDIT_CONTENT",
+      "VIEW_STATISTICS"
+    ],
+    "SENIOR_STAFF": [
+      "VIEW_CONTENT",
+      "EDIT_CONTENT",
+      "VIEW_STATISTICS"
+    ],
+    "SENIOR_ADMIN": [
+      "VIEW_CONTENT",
+      "EDIT_CONTENT",
+      "MANAGE_NAVIGATION",
+      "MANAGE_TASKS",
+      "MANAGE_AFK",
+      "VIEW_STATISTICS",
+      "MANAGE_STATISTICS",
+      "VIEW_AUDIT_LOG"
+    ],
+    "SYS_ADMIN": [
+      "VIEW_CONTENT",
+      "EDIT_CONTENT",
+      "MANAGE_NAVIGATION",
+      "MANAGE_PREFIXES",
+      "MANAGE_USERS",
+      "MANAGE_TASKS",
+      "MANAGE_AFK",
+      "VIEW_STATISTICS",
+      "MANAGE_STATISTICS",
+      "VIEW_AUDIT_LOG"
+    ],
+    "SUPER_ADMIN": [
+      "VIEW_CONTENT",
+      "EDIT_CONTENT",
+      "MANAGE_NAVIGATION",
+      "MANAGE_PREFIXES",
+      "MANAGE_USERS",
+      "MANAGE_TASKS",
+      "MANAGE_AFK",
+      "VIEW_STATISTICS",
+      "MANAGE_STATISTICS",
+      "VIEW_AUDIT_LOG"
+    ]
+  },
+  "checks": [
+    {
+      "id": "2dcfcca2-8682-4f69-a280-175f98084593",
+      "adminId": "u-blue-2",
+      "reviewerId": "u-admin",
+      "checkedAt": "2026-08-16T10:27:01.896Z",
+      "messages": 8,
+      "messagesMax": 8,
+      "replies": 8,
+      "repliesMax": 8,
+      "score": 18,
+      "maxScore": 18,
+      "items": [
+        {
+          "id": "quality",
+          "label": "Качество",
+          "score": 2,
+          "maxScore": 2,
+          "note": "11"
+        }
+      ],
+      "repeatNotes": []
+    }
+  ],
+  "notifications": []
+}

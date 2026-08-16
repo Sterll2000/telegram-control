@@ -1,0 +1,6 @@
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
+import { currentUser } from '@/lib/auth';
+import { audit, db, updateDB } from '@/lib/db';
+const schema=z.object({userId:z.string(),prefix:z.string().trim().max(24),color:z.string().regex(/^#[0-9a-fA-F]{6}$/),status:z.string().trim().max(30).optional(),style:z.enum(['soft','solid','outline','glow']).default('soft')});
+export async function PATCH(req:Request){const me=await currentUser();if(!me)return NextResponse.json({error:'Unauthorized'},{status:401});if(me.stars<5)return NextResponse.json({error:'Префикс и цвет доступны 5 звезде.'},{status:403});try{const p=schema.parse(await req.json());let ok=false;updateDB(d=>{const u=d.users.find(x=>x.id===p.userId);if(u){u.prefix=p.prefix||undefined;u.prefixColor=p.prefix?p.color:undefined;u.prefixStyle=p.prefix?p.style:undefined;u.status=p.status||u.status||'Активен';ok=true}});if(!ok)return NextResponse.json({error:'Пользователь не найден'},{status:404});audit(me.id,'UPDATE','PREFIX',p.userId,{prefix:p.prefix,color:p.color,status:p.status,style:p.style});return NextResponse.json({ok:true});}catch(e){return NextResponse.json({error:e instanceof Error?e.message:'Некорректные данные'},{status:400})}}
