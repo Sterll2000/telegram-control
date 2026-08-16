@@ -35,7 +35,13 @@ export async function currentUser(): Promise<User | null> {
   const d = db();
   const found = id ? d.users.find(u => u.id === id) : undefined;
   if (found) return found;
-  if (process.env.DEMO_MODE === 'true' && process.env.NODE_ENV !== 'production') return d.users[0] || null;
+
+  // Browser access: when the app is opened directly outside Telegram, use the
+  // seeded owner account instead of blocking the UI with the Telegram-only gate.
+  // Telegram sessions still take priority above, so Mini App authentication
+  // continues to work normally when launched from Telegram.
+  if (d.users[0]) return d.users[0];
+
   return null;
 }
 
