@@ -45,12 +45,21 @@ export default function Page() {
 
   useEffect(() => {
     let cancelled = false;
+    let attempts = 0;
     let timer: number | undefined;
 
     const run = async () => {
       try {
-        (globalThis as any).Telegram?.WebApp?.ready?.();
-        (globalThis as any).Telegram?.WebApp?.expand?.();
+        const webApp = (globalThis as any).Telegram?.WebApp;
+        webApp?.ready?.();
+        webApp?.expand?.();
+
+        if (!telegramInitData() && attempts < 12) {
+          attempts += 1;
+          timer = window.setTimeout(run, 150);
+          return;
+        }
+
         await authenticate();
       } catch (e) {
         if (!cancelled) setError(e instanceof Error ? e.message : 'Telegram authentication failed');
@@ -60,9 +69,6 @@ export default function Page() {
     };
 
     run();
-    timer = window.setTimeout(() => {
-      if (!cancelled && !telegramInitData()) setReady(true);
-    }, 1200);
 
     return () => {
       cancelled = true;
