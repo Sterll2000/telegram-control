@@ -1,10 +1,12 @@
 import crypto from 'node:crypto';
 import { cookies } from 'next/headers';
-import { db } from './db';
 import type { User } from './types';
+import { db } from './db';
 
 export const SESSION = process.env.NODE_ENV === 'production' ? '__Host-tc_session' : 'tc_session';
 const MAX_INIT_AGE = 60 * 60;
+
+type SessionPayload = { v: 1; user: User };
 
 function secret() {
   const value = process.env.SESSION_SECRET || (process.env.NODE_ENV !== 'production' ? 'local-development-secret-change-me' : '');
@@ -12,41 +14,64 @@ function secret() {
   return value;
 }
 
-function sign(id: string) {
-  return crypto.createHmac('sha256', secret()).update(id).digest('hex');
+function encodeUser(user: User) {
+  return Buffer.from(JSON.stringify({ v: 1, user } satisfies SessionPayload), 'utf8').toString('base64url');
 }
 
-function sessionValue(id: string) {
-  return `${id}.${sign(id)}`;
+function decodeUser(value: string): User | null {
+  try {
+    const parsed = JSON.parse(Buffer.from(value, 'base64url').toString('utf8')) as SessionPayload;
+    if (parsed?.v !== 1 || !parsed.user?.telegramId || !parsed.user?.id || !parsed.user?.role) return null;
+    return parsed.user;
+  } catch {
+    return null;
+  }
+}
+
+function sign(value: string) {
+  return crypto.createHmac('sha256', secret()).update(value).digest('hex');
+}
+
+function sessionValue(user: User) {
+  const payload = encodeUser(user);
+  return `${payload}.${sign(payload)}`;
 }
 
 function verifySession(value?: string) {
   if (!value) return null;
-  const [id, sig] = value.split('.');
-  if (!id || !sig) return null;
-  const expected = sign(id);
+  const dot = value.lastIndexOf('.');
+  if (dot <= 0) return null;
+  const payload = value.slice(0, dot);
+  const sig = value.slice(dot + 1);
+  const expected = sign(payload);
   if (sig.length !== expected.length) return null;
-  return crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected)) ? id : null;
+  if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
+  return decodeUser(payload);
 }
 
 export async function currentUser(): Promise<User | null> {
   const c = await cookies();
-  const id = verifySession(c.get(SESSION)?.value);
-  const d = db();
-  const found = id ? d.users.find(u => u.id === id) : undefined;
-  if (found) return found;
-  if (process.env.DEMO_MODE === 'true' && process.env.NODE_ENV !== 'production') return d.users[0] || null;
+  const sessionUser = verifySession(c.get(SESSION)?.value);
+  if (sessionUser) return sessionUser;
+
+  // Backward compatibility for the old id-only cookie format.
+  const legacy = c.get(SESSION)?.value?.split('.')[0];
+  if (legacy) {
+    const found = db().users.find(u => u.id === legacy || String(u.telegramId) === legacy);
+    if (found) return found;
+  }
+
+  if (process.env.DEMO_MODE === 'true' && process.env.NODE_ENV !== 'production') return db().users[0] || null;
   return null;
 }
 
 export async function requireUser() {
-  const user = await currentUser();
-  return user;
+  return currentUser();
 }
 
-export async function setSession(id: string) {
+export async function setSession(user: User) {
   const c = await cookies();
-  c.set(SESSION, sessionValue(id), {
+  c.set(SESSION, sessionValue(user), {
     httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
@@ -78,4 +103,4 @@ export function validateTelegramInitData(initData: string, botToken: string) {
   }
 }
 
-export function sessionCookieValue(id: string) { return sessionValue(id); }
+export function sessionCookieValue(user: User) { return sessionValue(user); }
