@@ -9,8 +9,11 @@ const MAX_INIT_AGE = 60 * 60;
 type SessionPayload = { v: 1; user: User };
 
 function secret() {
-  const value = process.env.SESSION_SECRET || (process.env.NODE_ENV !== 'production' ? 'local-development-secret-change-me' : '');
-  if (!value) throw new Error('SESSION_SECRET is required in production');
+  // SESSION_SECRET is preferred. If it was not configured in Vercel, use the
+  // Telegram bot token as a server-side fallback. The token is never exposed
+  // to the browser; it is only used to sign the httpOnly session cookie.
+  const value = process.env.SESSION_SECRET || process.env.TELEGRAM_BOT_TOKEN || (process.env.NODE_ENV !== 'production' ? 'local-development-secret-change-me' : '');
+  if (!value) throw new Error('SESSION_SECRET or TELEGRAM_BOT_TOKEN is required in production');
   return value;
 }
 
