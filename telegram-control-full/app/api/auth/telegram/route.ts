@@ -10,32 +10,37 @@ export async function POST(req: Request) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   if (!token) return NextResponse.json({ error: 'Telegram authentication is not configured' }, { status: 503 });
   if (process.env.NODE_ENV === 'production' && process.env.DEMO_MODE === 'true') return NextResponse.json({ error: 'Demo mode is forbidden in production' }, { status: 500 });
+
   const parsed = bodySchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success || !validateTelegramInitData(parsed.data.initData, token)) {
     return NextResponse.json({ error: 'Invalid Telegram initData' }, { status: 401 });
   }
+
   const p = new URLSearchParams(parsed.data.initData);
   let tg: { id?: number; username?: string; first_name?: string; last_name?: string; photo_url?: string };
   try { tg = JSON.parse(p.get('user') || '{}'); } catch { return NextResponse.json({ error: 'Invalid Telegram user payload' }, { status: 401 }); }
   if (!tg.id) return NextResponse.json({ error: 'Telegram user is missing' }, { status: 401 });
 
-  let id = '';
-  updateDB(d => {
-    let u = d.users.find(x => x.telegramId === Number(tg.id));
-    if (!u) {
+  let user;
+  try {
+    const existing = db().users.find(x => x.telegramId === Number(tg.id));
+    if (existing) {
+      user = { ...existing, username: tg.username || existing.username, firstName: tg.first_name || existing.firstName, lastName: tg.last_name || existing.lastName, avatarUrl: tg.photo_url || existing.avatarUrl };
+      // Best-effort update only; production auth does not depend on filesystem writes.
+      try { updateDB(d => { const u = d.users.find(x => x.id === existing.id); if (u) Object.assign(u, user); }); } catch {}
+    } else {
       const isInitialAdmin = process.env.INITIAL_ADMIN_TELEGRAM_ID && String(tg.id) === String(process.env.INITIAL_ADMIN_TELEGRAM_ID);
       const stars = isInitialAdmin ? 5 : 1;
-      u = { id: uid(), telegramId: Number(tg.id), username: tg.username || `user_${tg.id}`, firstName: tg.first_name || '', lastName: tg.last_name || '', avatarUrl: tg.photo_url, stars, role: roleForStars(stars) };
-      d.users.push(u);
-    } else {
-      u.username = tg.username || u.username;
-      u.firstName = tg.first_name || u.firstName;
-      u.lastName = tg.last_name || u.lastName;
-      u.avatarUrl = tg.photo_url || u.avatarUrl;
+      user = { id: uid(), telegramId: Number(tg.id), username: tg.username || `user_${tg.id}`, firstName: tg.first_name || '', lastName: tg.last_name || '', avatarUrl: tg.photo_url, stars, role: roleForStars(stars) };
+      // Best-effort persistence; the signed cookie carries the authenticated user on Vercel.
+      try { updateDB(d => d.users.push(user)); } catch {}
     }
-    id = u.id;
-  });
-  await setSession(id);
-  audit(id, 'LOGIN', 'AUTH');
-  return NextResponse.json({ ok: true });
+
+    await setSession(user);
+    try { audit(user.id, 'LOGIN', 'AUTH'); } catch {}
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error('Telegram auth error:', error);
+    return NextResponse.json({ error: 'Telegram authentication failed' }, { status: 500 });
+  }
 }
