@@ -1,97 +1,77 @@
 import crypto from 'node:crypto';
 import { cookies } from 'next/headers';
-import { db } from './db';
 import type { User } from './types';
-import { roleForStars } from './permissions';
+import { db } from './db';
 
 export const SESSION = process.env.NODE_ENV === 'production' ? '__Host-tc_session' : 'tc_session';
 const MAX_INIT_AGE = 60 * 60;
-const SESSION_PREFIX = 'tg_';
 
-type SessionProfile = {
-  telegramId: number;
-  username: string;
-  firstName: string;
-  lastName: string;
-  avatarUrl?: string;
-  stars: number;
-  role: User['role'];
-};
+type SessionPayload = { v: 1; user: User };
 
 function secret() {
-  // SESSION_SECRET is preferred. In production we also accept the bot token as
-  // a fallback so a missing Vercel SESSION_SECRET cannot break Telegram login.
   const value = process.env.SESSION_SECRET || process.env.TELEGRAM_BOT_TOKEN || (process.env.NODE_ENV !== 'production' ? 'local-development-secret-change-me' : '');
   if (!value) throw new Error('SESSION_SECRET or TELEGRAM_BOT_TOKEN is required in production');
   return value;
 }
 
-function sign(id: string) {
-  return crypto.createHmac('sha256', secret()).update(id).digest('hex');
+function encodeUser(user: User) {
+  return Buffer.from(JSON.stringify({ v: 1, user } satisfies SessionPayload), 'utf8').toString('base64url');
 }
 
-function sessionValue(id: string) {
-  return `${id}.${sign(id)}`;
-}
-
-function verifySession(value?: string) {
-  if (!value) return null;
-  const [id, sig] = value.split('.');
-  if (!id || !sig) return null;
-  const expected = sign(id);
-  if (sig.length !== expected.length) return null;
-  return crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected)) ? id : null;
-}
-
-function adminTelegramIds() {
-  return new Set((process.env.ADMIN_TELEGRAM_IDS || '').split(',').map(x => x.trim()).filter(Boolean));
-}
-
-function encodeProfile(profile: SessionProfile) {
-  return SESSION_PREFIX + Buffer.from(JSON.stringify(profile), 'utf8').toString('base64url');
-}
-
-function decodeProfile(id: string): SessionProfile | null {
-  if (!id.startsWith(SESSION_PREFIX)) return null;
+function decodeUser(value: string): User | null {
   try {
-    const parsed = JSON.parse(Buffer.from(id.slice(SESSION_PREFIX.length), 'base64url').toString('utf8')) as SessionProfile;
-    if (!Number.isFinite(Number(parsed.telegramId)) || !parsed.username) return null;
-    return parsed;
+    const parsed = JSON.parse(Buffer.from(value, 'base64url').toString('utf8')) as SessionPayload;
+    if (parsed?.v !== 1 || !parsed.user?.telegramId || !parsed.user?.id || !parsed.user?.role) return null;
+    return parsed.user;
   } catch {
     return null;
   }
 }
 
-function userFromProfile(profile: SessionProfile): User {
-  return {
-    id: `tg-${profile.telegramId}`,
-    telegramId: profile.telegramId,
-    username: profile.username || `user_${profile.telegramId}`,
-    firstName: profile.firstName || '',
-    lastName: profile.lastName || '',
-    avatarUrl: profile.avatarUrl,
-    stars: profile.stars,
-    role: profile.role,
-  };
+function sign(value: string) {
+  return crypto.createHmac('sha256', secret()).update(value).digest('hex');
+}
+
+function sessionValue(user: User) {
+  const payload = encodeUser(user);
+  return `${payload}.${sign(payload)}`;
+}
+
+function verifySession(value?: string) {
+  if (!value) return null;
+  const dot = value.lastIndexOf('.');
+  if (dot <= 0) return null;
+  const payload = value.slice(0, dot);
+  const sig = value.slice(dot + 1);
+  const expected = sign(payload);
+  if (sig.length !== expected.length) return null;
+  if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
+  return decodeUser(payload);
 }
 
 export async function currentUser(): Promise<User | null> {
   const c = await cookies();
-  const id = verifySession(c.get(SESSION)?.value);
-  const d = db();
-  const found = id ? d.users.find(u => u.id === id) : undefined;
-  if (found) return found;
-  const profile = id ? decodeProfile(id) : null;
-  return profile ? userFromProfile(profile) : null;
+  const sessionUser = verifySession(c.get(SESSION)?.value);
+  if (sessionUser) return sessionUser;
+
+  // Backward compatibility for the old id-only cookie format.
+  const legacy = c.get(SESSION)?.value?.split('.')[0];
+  if (legacy) {
+    const found = db().users.find(u => u.id === legacy || String(u.telegramId) === legacy);
+    if (found) return found;
+  }
+
+  // Telegram-only: without a valid Telegram session the browser is not authenticated.
+  return null;
 }
 
 export async function requireUser() {
   return currentUser();
 }
 
-export async function setSession(id: string) {
+export async function setSession(user: User) {
   const c = await cookies();
-  c.set(SESSION, sessionValue(id), {
+  c.set(SESSION, sessionValue(user), {
     httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
@@ -123,33 +103,4 @@ export function validateTelegramInitData(initData: string, botToken: string) {
   }
 }
 
-export function buildTelegramUser(input: { id: number; username?: string; first_name?: string; last_name?: string; photo_url?: string }): User {
-  const telegramId = Number(input.id);
-  const isAdmin = adminTelegramIds().has(String(telegramId));
-  const stars = isAdmin ? 5 : 1;
-  const role = roleForStars(stars);
-  return {
-    id: `tg-${telegramId}`,
-    telegramId,
-    username: input.username || `user_${telegramId}`,
-    firstName: input.first_name || '',
-    lastName: input.last_name || '',
-    avatarUrl: input.photo_url,
-    stars,
-    role,
-  };
-}
-
-export function profileSessionId(user: User) {
-  return encodeProfile({
-    telegramId: user.telegramId,
-    username: user.username,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    avatarUrl: user.avatarUrl,
-    stars: user.stars,
-    role: user.role,
-  });
-}
-
-export function sessionCookieValue(id: string) { return sessionValue(id); }
+export function sessionCookieValue(user: User) { return sessionValue(user); }
