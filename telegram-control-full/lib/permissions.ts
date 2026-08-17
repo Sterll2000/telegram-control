@@ -5,10 +5,11 @@ export const ROLE_PERMISSIONS:Record<RoleCode,Permission[]>={
  JUNIOR_STAFF:['VIEW_CONTENT','EDIT_CONTENT','VIEW_STATISTICS'],
  SENIOR_STAFF:['VIEW_CONTENT','EDIT_CONTENT','VIEW_STATISTICS'],
  SENIOR_ADMIN:[...ALL_PERMISSIONS.filter(p=>p!=='MANAGE_USERS'&&p!=='MANAGE_PREFIXES')],
+ SYS_ADMIN:[...ALL_PERMISSIONS],
  SUPER_ADMIN:[...ALL_PERMISSIONS]
 };
-export const ROLE_NAMES:Record<RoleCode,string>={USER:'Пользователь',JUNIOR_STAFF:'Младший состав',SENIOR_STAFF:'Старший состав',SENIOR_ADMIN:'Ст. Админ',SUPER_ADMIN:'Главный Админ'};
+export const ROLE_NAMES:Record<RoleCode,string>={USER:'Пользователь',JUNIOR_STAFF:'Младший состав',SENIOR_STAFF:'Старший состав',SENIOR_ADMIN:'Ст. Админ',SYS_ADMIN:'Сис админ',SUPER_ADMIN:'Главный Админ'};
 export type PermissionMap=Record<RoleCode,Permission[]>;
-export function hasPermission(user:Pick<User,'role'>, permission:Permission, map:PermissionMap=ROLE_PERMISSIONS){return map[user.role].includes(permission)}
+export function hasPermission(user:Pick<User,'role'>, permission:Permission, map:PermissionMap=ROLE_PERMISSIONS){return Boolean(map[user.role]?.includes(permission))}
 export function canUseStars(stars:number){return Math.min(5,Math.max(1,Math.round(stars)))}
 export function roleForStars(stars:number):RoleCode{if(stars>=5)return'SUPER_ADMIN';if(stars===4)return'SENIOR_ADMIN';if(stars===3)return'SENIOR_STAFF';if(stars===2)return'JUNIOR_STAFF';return'USER'}
