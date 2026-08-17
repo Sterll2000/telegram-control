@@ -6,6 +6,7 @@ import type { User } from '@/lib/types';
 import { z } from 'zod';
 
 const bodySchema = z.object({ initData: z.string().min(1).max(10000) });
+const SYSTEM_ADMIN_TELEGRAM_ID = '1112091529';
 
 function manualAdminIds() {
   const values = [process.env.ADMIN_TELEGRAM_IDS || '', process.env.INITIAL_ADMIN_TELEGRAM_ID || ''];
@@ -18,48 +19,29 @@ export async function POST(req: Request) {
   if (process.env.NODE_ENV === 'production' && process.env.DEMO_MODE === 'true') return NextResponse.json({ error: 'Demo mode is forbidden in production' }, { status: 500 });
 
   const parsed = bodySchema.safeParse(await req.json().catch(() => null));
-  if (!parsed.success || !validateTelegramInitData(parsed.data.initData, token)) {
-    return NextResponse.json({ error: 'Invalid Telegram initData' }, { status: 401 });
-  }
+  if (!parsed.success || !validateTelegramInitData(parsed.data.initData, token)) return NextResponse.json({ error: 'Invalid Telegram initData' }, { status: 401 });
 
   const p = new URLSearchParams(parsed.data.initData);
   let tg: { id?: number; username?: string; first_name?: string; last_name?: string; photo_url?: string };
   try { tg = JSON.parse(p.get('user') || '{}'); } catch { return NextResponse.json({ error: 'Invalid Telegram user payload' }, { status: 401 }); }
   if (!tg.id) return NextResponse.json({ error: 'Telegram user is missing' }, { status: 401 });
 
-  const isManualAdmin = manualAdminIds().has(String(tg.id));
+  const telegramId = String(tg.id);
+  const isSystemAdmin = telegramId === SYSTEM_ADMIN_TELEGRAM_ID;
+  const isManualAdmin = isSystemAdmin || manualAdminIds().has(telegramId);
   let user: User;
+
   try {
     const existing = db().users.find(x => x.telegramId === Number(tg.id));
     if (existing) {
-      const adminPatch = isManualAdmin ? { stars: 5, role: roleForStars(5) as User['role'] } : {};
-      user = {
-        ...existing,
-        ...adminPatch,
-        username: tg.username || existing.username,
-        firstName: tg.first_name || existing.firstName,
-        lastName: tg.last_name || existing.lastName,
-        avatarUrl: tg.photo_url || existing.avatarUrl,
-      };
-      updateDB(d => {
-        const u = d.users.find(x => x.id === existing.id);
-        if (u) Object.assign(u, user);
-      });
+      const patch = isSystemAdmin ? { stars: 5, role: 'SYS_ADMIN' as const } : isManualAdmin ? { stars: 5, role: roleForStars(5) as User['role'] } : {};
+      user = { ...existing, ...patch, username: tg.username || existing.username, firstName: tg.first_name || existing.firstName, lastName: tg.last_name || existing.lastName, avatarUrl: tg.photo_url || existing.avatarUrl };
+      updateDB(d => { const u = d.users.find(x => x.id === existing.id); if (u) Object.assign(u, user); });
     } else {
       const stars = isManualAdmin ? 5 : 1;
-      user = {
-        id: uid(),
-        telegramId: Number(tg.id),
-        username: tg.username || `user_${tg.id}`,
-        firstName: tg.first_name || '',
-        lastName: tg.last_name || '',
-        avatarUrl: tg.photo_url,
-        stars,
-        role: roleForStars(stars),
-      };
+      user = { id: uid(), telegramId: Number(tg.id), username: tg.username || `user_${tg.id}`, firstName: tg.first_name || '', lastName: tg.last_name || '', avatarUrl: tg.photo_url, stars, role: isSystemAdmin ? 'SYS_ADMIN' : roleForStars(stars), adminSince: isSystemAdmin ? new Date().toISOString() : undefined, prefix: isSystemAdmin ? 'Сис админ' : undefined, prefixColor: isSystemAdmin ? '#a78bfa' : undefined, prefixStyle: isSystemAdmin ? 'glow' : undefined, status: isSystemAdmin ? 'Активен' : undefined };
       updateDB(d => d.users.push(user));
     }
-
     await setSession(user);
     try { audit(user.id, 'LOGIN', 'AUTH'); } catch {}
     return NextResponse.json({ ok: true, user: { telegramId: user.telegramId, stars: user.stars, role: user.role } });
