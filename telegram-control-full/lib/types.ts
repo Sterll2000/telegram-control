@@ -1,10 +1,14 @@
 export type Permission = 'VIEW_CONTENT'|'EDIT_CONTENT'|'MANAGE_NAVIGATION'|'MANAGE_PREFIXES'|'MANAGE_USERS'|'MANAGE_TASKS'|'MANAGE_AFK'|'VIEW_STATISTICS'|'MANAGE_STATISTICS'|'VIEW_AUDIT_LOG';
-export type RoleCode='USER'|'JUNIOR_STAFF'|'SENIOR_STAFF'|'SENIOR_ADMIN'|'SUPER_ADMIN';
+export type RoleCode='USER'|'JUNIOR_STAFF'|'SENIOR_STAFF'|'SENIOR_ADMIN'|'SYS_ADMIN'|'SUPER_ADMIN';
 export type TaskStatus='NEW'|'IN_PROGRESS'|'DONE';
 export type Priority='LOW'|'MEDIUM'|'HIGH';
-export type User={id:string;telegramId:number;username:string;firstName:string;lastName:string;avatarUrl?:string;stars:number;role:RoleCode};
+export type User={id:string;telegramId:number;username:string;firstName:string;lastName:string;avatarUrl?:string;stars:number;role:RoleCode;adminSince?:string;prefix?:string;prefixColor?:string;prefixStyle?:'soft'|'solid'|'outline'|'glow';status?:string};
 export type NavItem={id:string;title:string;body:string;imageUrl?:string};
 export type NavCategory={id:string;title:string;icon:string;items:NavItem[]};
 export type Task={id:string;title:string;description:string;status:TaskStatus;priority:Priority;assigneeId?:string;createdBy:string;dueAt?:string;createdAt:string};
-export type AfkRecord={id:string;userId:string;reason:string;startsAt:string;endsAt?:string;active:boolean;createdBy:string};
+export type AfkStatus='PENDING'|'APPROVED'|'REJECTED'|'CANCELLED';
+export type AfkRecord={id:string;userId:string;reason:string;startsAt:string;endsAt:string;active:boolean;createdBy:string;status:AfkStatus;reviewedBy?:string;reviewedAt?:string;reviewComment?:string};
+export type Notification={id:string;userId:string;type:'AFK_REQUEST'|'AFK_DECISION'|'SYSTEM';title:string;body:string;read:boolean;createdAt:string;entityId?:string};
+export type CheckItem={id:string;label:string;score:number;maxScore:number;note?:string};
+export type AdminCheck={id:string;adminId:string;reviewerId:string;checkedAt:string;messages:number;messagesMax:number;replies:number;repliesMax:number;score:number;maxScore:number;items:CheckItem[];repeatNotes:string[]};
 export type AuditLog={id:string;actorId:string;action:string;entity:string;entityId?:string;payload?:Record<string,unknown>;createdAt:string};
