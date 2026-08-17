@@ -58,3 +58,5 @@ Authorization is permission-based, not a frontend star check. Protected API rout
 ## GitHub / Vercel / Telegram
 
 See `DEPLOYMENT.md` for GitHub, Vercel, Supabase and BotFather setup.
+
+<!-- Legacy admin model restored: manual admin IDs, admin list, prefixes, RBAC roles, and 1–5 star management. Telegram Mini App auth remains server-validated. -->
